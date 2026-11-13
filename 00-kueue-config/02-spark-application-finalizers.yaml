@@ -1,0 +1,34 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kueue-sparkapplication-finalizers
+rules:
+  - verbs:
+      - update
+    apiGroups:
+      - sparkoperator.k8s.io
+    resources:
+      - sparkapplications/finalizers
+  - verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+    apiGroups:
+      - sparkoperator.k8s.io
+    resources:
+      - sparkapplications
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kueue-sparkapplication-finalizers
+subjects:
+  - kind: ServiceAccount
+    name: kueue-controller-manager
+    namespace: openshift-kueue-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kueue-sparkapplication-finalizers

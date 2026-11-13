@@ -1,0 +1,15 @@
+# Namespace for the Spark Connect server and (optionally) workbenches.
+#
+# The label `opendatahub.io/dashboard: "true"` is required:
+#   1. It makes the namespace appear in the OpenShift AI dashboard as a
+#      Data Science Project, so workbenches can be created in it.
+#   2. It is referenced by the `spark-operator-allow-internal` NetworkPolicy,
+#      which only allows gRPC (port 15002) from workbench pods in namespaces
+#      carrying this label.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spark-notebook
+  labels:
+    opendatahub.io/dashboard: "true"
+    kueue.openshift.io/managed: "true"

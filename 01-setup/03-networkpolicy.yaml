@@ -1,0 +1,47 @@
+# Allows Spark internal communication and workbench connectivity for pods
+# launched by the Spark Operator in `spark-notebook`.
+#
+# Ports:
+#   7078  - Spark driver RPC (driver <-> executor)
+#   7079  - Spark block manager (data transfer between pods)
+#   4040  - Spark UI
+#   15002 - Spark Connect gRPC endpoint used by workbench notebooks.
+#           Allowed from any pod in this namespace, and from workbench pods
+#           (label opendatahub.io/workbenches: "true") in any namespace
+#           labeled opendatahub.io/dashboard: "true".
+#           (namespaceSelector + podSelector in the same rule = AND.)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: spark-operator-allow-internal
+  namespace: spark-notebook
+spec:
+  podSelector:
+    matchLabels:
+      sparkoperator.k8s.io/launched-by-spark-operator: "true"
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+        - port: 7078
+          protocol: TCP
+        - port: 7079
+          protocol: TCP
+        - port: 4040
+          protocol: TCP
+      from:
+        - podSelector: {}
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+    - ports:
+        - port: 15002
+          protocol: TCP
+      from:
+        - podSelector: {}
+        - namespaceSelector:
+            matchLabels:
+              opendatahub.io/dashboard: "true"
+          podSelector:
+            matchLabels:
+              opendatahub.io/workbenches: "true"
