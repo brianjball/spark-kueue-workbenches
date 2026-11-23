@@ -45,3 +45,39 @@ spec:
           podSelector:
             matchLabels:
               opendatahub.io/workbenches: "true"
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: spark-operator-allow-internal
+  namespace: spark-teamb
+spec:
+  podSelector:
+    matchLabels:
+      sparkoperator.k8s.io/launched-by-spark-operator: "true"
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+        - port: 7078
+          protocol: TCP
+        - port: 7079
+          protocol: TCP
+        - port: 4040
+          protocol: TCP
+      from:
+        - podSelector: {}
+        - namespaceSelector:
+            matchLabels:
+              network.openshift.io/policy-group: ingress
+    - ports:
+        - port: 15002
+          protocol: TCP
+      from:
+        - podSelector: {}
+        - namespaceSelector:
+            matchLabels:
+              opendatahub.io/dashboard: "true"
+          podSelector:
+            matchLabels:
+              opendatahub.io/workbenches: "true"

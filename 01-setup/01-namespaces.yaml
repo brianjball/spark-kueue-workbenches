@@ -13,3 +13,11 @@ metadata:
   labels:
     opendatahub.io/dashboard: "true"
     kueue.openshift.io/managed: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spark-teamb
+  labels:
+    opendatahub.io/dashboard: "true"
+    kueue.openshift.io/managed: "true"

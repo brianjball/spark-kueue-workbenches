@@ -1,0 +1,67 @@
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: tc5-gang-scheduling
+  namespace: spark-notebook
+  labels:
+    app: spark-contention-poc
+    poc/test-case: tc5-gang-scheduling
+    kueue.x-k8s.io/queue-name: spark-lq
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  sparkVersion: "4.0.1"
+  image: quay.io/opendatahub/data-processing:Spark-v4.0.1
+  imagePullPolicy: IfNotPresent
+  mainApplicationFile: local:///opt/spark/examples/src/main/python/pi.py
+  sparkConf:
+    spark.executor.instances: "4"
+  driver:
+    cores: 1
+    coreRequest: "1"
+    memory: 512m
+    serviceAccount: spark-operator-spark
+    securityContext: {}
+  executor:
+    instances: 2
+    cores: 1
+    coreRequest: "1"
+    memory: 1g
+    securityContext: {}
+  restartPolicy:
+    type: Never
+---
+apiVersion: sparkoperator.k8s.io/v1beta2
+kind: SparkApplication
+metadata:
+  name: tc5-2-gang-scheduling
+  namespace: spark-notebook
+  labels:
+    app: spark-contention-poc
+    poc/test-case: tc5-2-gang-scheduling
+    kueue.x-k8s.io/queue-name: spark-lq
+spec:
+  type: Python
+  pythonVersion: "3"
+  mode: cluster
+  sparkVersion: "4.0.1"
+  image: quay.io/opendatahub/data-processing:Spark-v4.0.1
+  imagePullPolicy: IfNotPresent
+  mainApplicationFile: local:///opt/spark/examples/src/main/python/pi.py
+  sparkConf:
+    spark.executor.instances: "4"
+  driver:
+    cores: 1
+    coreRequest: "1"
+    memory: 512m
+    serviceAccount: spark-operator-spark
+    securityContext: {}
+  executor:
+    instances: 2
+    cores: 1
+    coreRequest: "1"
+    memory: 1g
+    securityContext: {}
+  restartPolicy:
+    type: Never

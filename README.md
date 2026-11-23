@@ -9,6 +9,11 @@ This repository is a demonstration of some of the functionality of the Kubeflow 
 For the most part, you can roll through this repository in the order of the folders. There are a couple of specific exceptions:
 
 * The gang scheduling configuration for Kueue needs to be run as a server side apply
-* * `oc apply -f 00-kueue-config/00-kueue-gang-scheduling.yaml --server-side`
+* * `oc apply -f 00-kueue-config/01-kueue-gang-scheduling.yaml --server-side`
 * Spark Connect has another README in its folder on how to connect a workbench to the SparkConnect cluster.
 
+## Kueue Borrowing
+
+Folder `05-kueue-borrowing` demonstrates how resources can be borrowed from the shared pool. Run both of them at the same time and watch one of the jobs in `spark-notebook` get preempted for the job in `spark-teamb`.
+
+There is something that bears discussing here about the resources. ClusterQueue nominalQuota is guaranteed. Cohort nominalQuota is *always* shared. So if you have a Cohort quota of 4 and a ClusterQueue quota of 3, technically that ClusterQueue can consume 7 CPU at a time assuming nothing else is pulling resources from the Cohort. This is different from how other resource schedulers operate and put some additional constraints on how you think about configuring your queues. 

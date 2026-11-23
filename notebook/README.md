@@ -137,7 +137,7 @@ sc://spark-connect-server.spark-notebook.svc.cluster.local:15002
        "sc://spark-connect-server.spark-notebook.svc.cluster.local:15002"
    ).getOrCreate()
 
-   data = [("Alice", 34), ("Bob", 45), ("Claire", 66)]
+   data = [("Alice", 34), ("Bob", 45), ("Claire", 66)]*1000
    df = spark.createDataFrame(data, ["Name", "Age"])
    df.filter(df.Age > 40).show()
    ```

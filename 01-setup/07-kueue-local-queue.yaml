@@ -14,3 +14,11 @@ metadata:
   namespace: spark-notebook
 spec:
   clusterQueue: spark-cq
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue
+metadata:
+  name: spark-lq-teamb
+  namespace: spark-teamb
+spec:
+  clusterQueue: spark-cq-teamb

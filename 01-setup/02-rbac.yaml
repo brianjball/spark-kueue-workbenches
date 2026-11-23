@@ -46,3 +46,47 @@ roleRef:
   kind: Role
   name: spark-role
   apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spark-operator-spark
+  namespace: spark-teamb
+---
+# The Spark driver needs permissions to create and manage executor pods,
+# ConfigMaps, PersistentVolumeClaims, and Services.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: spark-role
+  namespace: spark-teamb
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - configmaps
+  - persistentvolumeclaims
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+  - deletecollection
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: spark-role-binding
+  namespace: spark-teamb
+subjects:
+- kind: ServiceAccount
+  name: spark-operator-spark
+roleRef:
+  kind: Role
+  name: spark-role
+  apiGroup: rbac.authorization.k8s.io

@@ -1,11 +1,11 @@
 apiVersion: sparkoperator.k8s.io/v1beta2
 kind: SparkApplication
 metadata:
-  name: tc4b-gang-scheduling
+  name: tc4-2-gang-scheduling
   namespace: spark-notebook
   labels:
     app: spark-contention-poc
-    poc/test-case: tc4b-gang-scheduling
+    poc/test-case: tc4-2-gang-scheduling
     kueue.x-k8s.io/queue-name: spark-lq
 spec:
   type: Python
